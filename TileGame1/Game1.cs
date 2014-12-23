@@ -21,6 +21,8 @@ namespace TileGame1
 
         SpriteMap sprites;
 
+        Map map;
+
         public Game1()
             : base()
         {
@@ -36,7 +38,7 @@ namespace TileGame1
         /// </summary>
         protected override void Initialize()
         {
-            // TODO: Add your initialization logic here
+            map = new Map();
 
             base.Initialize();
         }
@@ -88,9 +90,12 @@ namespace TileGame1
 
             spriteBatch.Begin();
 
-            for (int i = 0; i < sprites.Sprites.Count; i++)
+            for (int y = 0; y < map.Height; y++)
             {
-                sprites.Draw(spriteBatch, new Vector2(i * sprites.SpriteWidth * 2, 0), i);
+                for (int x = 0; x < map.Width; x++)
+                {
+                    sprites.Draw(spriteBatch, new Vector2(x * sprites.SpriteWidth, y * sprites.SpriteHeight), map.GetTile(x, y));
+                }
             }
 
             spriteBatch.End();
