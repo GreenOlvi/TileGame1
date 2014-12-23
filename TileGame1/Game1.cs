@@ -19,9 +19,10 @@ namespace TileGame1
         GraphicsDeviceManager graphics;
         SpriteBatch spriteBatch;
 
-        SpriteMap sprites;
+        private SpriteMap sprites;
 
-        Map map;
+        private Map map;
+        private Vector2 MapView;
 
         public Game1()
             : base()
@@ -39,6 +40,7 @@ namespace TileGame1
         protected override void Initialize()
         {
             map = new Map();
+            MapView = new Vector2(0, 0);
 
             base.Initialize();
         }
@@ -62,7 +64,6 @@ namespace TileGame1
         /// </summary>
         protected override void UnloadContent()
         {
-            // TODO: Unload any non ContentManager content here
         }
 
         /// <summary>
@@ -75,7 +76,23 @@ namespace TileGame1
             if (GamePad.GetState(PlayerIndex.One).Buttons.Back == ButtonState.Pressed || Keyboard.GetState().IsKeyDown(Keys.Escape))
                 Exit();
 
-            // TODO: Add your update logic here
+            KeyboardState state = Keyboard.GetState();
+            if (state.IsKeyDown(Keys.W) || state.IsKeyDown(Keys.Up))
+            {
+                MapView.Y -= 1;
+            }
+            if (state.IsKeyDown(Keys.S) || state.IsKeyDown(Keys.Down))
+            {
+                MapView.Y += 1;
+            }
+            if (state.IsKeyDown(Keys.A) || state.IsKeyDown(Keys.Left))
+            {
+                MapView.X -= 1;
+            }
+            if (state.IsKeyDown(Keys.D) || state.IsKeyDown(Keys.Right))
+            {
+                MapView.X += 1;
+            }
 
             base.Update(gameTime);
         }
@@ -94,7 +111,7 @@ namespace TileGame1
             {
                 for (int x = 0; x < map.Width; x++)
                 {
-                    sprites.Draw(spriteBatch, new Vector2(x * sprites.SpriteWidth, y * sprites.SpriteHeight), map.GetTile(x, y));
+                    sprites.Draw(spriteBatch, new Vector2(x * sprites.SpriteWidth + MapView.X, y * sprites.SpriteHeight + MapView.Y), map.GetTile(x, y));
                 }
             }
 
